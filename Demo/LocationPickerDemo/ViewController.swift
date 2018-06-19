@@ -13,6 +13,7 @@ import MapKit
 
 class ViewController: UIViewController {
 	@IBOutlet weak var locationNameLabel: UILabel!
+    
 	var location: Location? {
 		didSet {
 			locationNameLabel.text = location.flatMap({ $0.title }) ?? "No location selected"
@@ -21,18 +22,16 @@ class ViewController: UIViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		let coordinates = CLLocationCoordinate2D(latitude: 43.25, longitude: 76.95)
-		location = Location(name: "Test", location: nil,
-			placemark: MKPlacemark(coordinate: coordinates, addressDictionary: [:]))
+		location = nil
 	}
 	
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		if segue.identifier == "LocationPicker" {
 			let locationPicker = segue.destination as! LocationPickerViewController
-			locationPicker.location = location
+            locationPicker.location = location
 			locationPicker.showCurrentLocationButton = true
 			locationPicker.useCurrentLocationAsHint = true
-			locationPicker.showCurrentLocationInitially = true
+			locationPicker.selectCurrentLocationInitially = true
 			
 			locationPicker.completion = { self.location = $0 }
 		}
